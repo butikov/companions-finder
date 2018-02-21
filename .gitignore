@@ -153,3 +153,4 @@ venv.bak/
 # mkdocs documentation
 /site
 .idea/inspectionProfiles/
+*/migrations
