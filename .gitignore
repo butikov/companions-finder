@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Created by .ignore support plugin (hsz.mobi)
 ### JetBrains template
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio and Webstorm
@@ -51,6 +52,8 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 ### Python template
+=======
+>>>>>>> 9c4bde94d3b7cd5c0779f990fe84d805d775449b
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -61,6 +64,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+env/
 build/
 develop-eggs/
 dist/
@@ -76,7 +80,6 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
-MANIFEST
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -152,5 +155,5 @@ venv.bak/
 
 # mkdocs documentation
 /site
-.idea/inspectionProfiles/
-*/migrations
+.idea/
+*/migrations/
