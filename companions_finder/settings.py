@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+INTERNAL_IPS = ['127.0.0.1', ]
+
 
 # Application definition
 
@@ -38,14 +40,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
-    'core.apps.CompanionsConfig',
-    'event.apps.EventConfig',
+    'debug_toolbar',
+    'social_django',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'core.apps.CoreConfig',
+    'meet.apps.MeetConfig',
     'comment.apps.CommentConfig',
     'like.apps.LikeConfig',
     'category.apps.CategoryConfig',
+    'user.apps.UserConfig',
+    'webpack_loader',
 ]
-
-AUTH_USER_MODEL = 'core.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -55,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'companions_finder.urls'
@@ -71,6 +79,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -85,6 +95,8 @@ WSGI_APPLICATION = 'companions_finder.wsgi.application'
 DATABASES = {'default': dj_config_url.parse('postgis://fedor:@:5432/companions')}
 
 DATABASES['default']['ENGINE'] = dj_config_url.DB_SCHEMES['postgis']
+
+SOCIAL_AUTH_POSTGRES_JSONFIELD = True
 
 CACHES = {'default': dj_config_url.parse('memcache://...')}
 
@@ -106,6 +118,42 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTH_USER_MODEL = 'user.DefaultUser'
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.instagram.InstagramOAuth2',
+    'social_core.backends.mailru.MailruOAuth2',
+    'social_core.backends.vk.VKOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+SOCIAL_AUTH_VK_OAUTH2_KEY = '6404266'
+SOCIAL_AUTH_VK_OAUTH2_SECRET = 'eeQe3Ix6greJkvZTKLxO'
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email', ]
+
+SOCIAL_AUTH_TWITTER_KEY = 'uiULRwjZJUfstSfqX6k7U051s'
+SOCIAL_AUTH_TWITTER_SECRET = '98IG8a90bV6OMAcfzBPwZtVRbZskO4WjBcedT2dQJqfAVC6cUQ'
+
+SOCIAL_AUTH_FACEBOOK_KEY = ''
+SOCIAL_AUTH_FACEBOOK_SECRET = ''
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '354817032195-ad6eb8cv9gr3dr6ghclq1t59rh8dk5r1.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'BZyZR_PKn3_E47SptbxUEGyB'
+
+LOGIN_URL = 'api-auth/login'
+LOGOUT_URL = 'api-auth/logout'
+LOGIN_REDIRECT_URL = '/api/v1/'
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'core.permissions.IsAdminOrIsAuthorOrReadOnly'
+    ]
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
@@ -125,3 +173,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = 'staticfiles'
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
