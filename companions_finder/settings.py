@@ -29,6 +29,12 @@ ALLOWED_HOSTS = []
 
 INTERNAL_IPS = ['127.0.0.1', ]
 
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_TASK_SERIALIZER = 'json'
+
 
 # Application definition
 
@@ -44,6 +50,8 @@ INSTALLED_APPS = [
     'social_django',
     'rest_framework',
     'rest_framework.authtoken',
+    'templated_email',
+    'haystack',
     'core.apps.CoreConfig',
     'meet.apps.MeetConfig',
     'comment.apps.CommentConfig',
@@ -92,7 +100,7 @@ WSGI_APPLICATION = 'companions_finder.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-DATABASES = {'default': dj_config_url.parse('postgis://fedor:@:5432/companions')}
+DATABASES = {'default': dj_config_url.parse('postgis://fedor:seafish@:5432/companions')}
 
 DATABASES['default']['ENGINE'] = dj_config_url.DB_SCHEMES['postgis']
 
@@ -177,3 +185,10 @@ STATIC_ROOT = 'staticfiles'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
+    },
+}

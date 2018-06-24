@@ -19,5 +19,9 @@ class Meet(models.BasicObjectModel, models.UGCModel, models.TextModel, models.Li
         verbose_name = 'Мероприятие'
         verbose_name_plural = 'Мероприятия'
 
+    # @fields.permalink
+    # def get_absolute_url(self):
+    #     return "api/v1/meet/" + str(self.pk)
+
     def __str__(self):
         return self.title
